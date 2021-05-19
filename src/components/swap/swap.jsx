@@ -410,8 +410,8 @@ class Swap extends Component {
               </div>
               { this.renderAssetInput('to') }
               <RateInfo
-                fromAsset={fromAsset}
-                toAsset={toAsset}
+                fromAsset={this.state.selectedPool ? fromAsset.includes('OPIUM') ? this.state.selectedPool.name.split(':')[1] : fromAsset : ''}
+                toAsset={this.state.selectedPool ? toAsset.includes('OPIUM') ? this.state.selectedPool.name.split(':')[1] : toAsset : ''}
                 receivePerSend={receivePerSend}
                 sendPerReceive={sendPerReceive}
               />
@@ -437,6 +437,8 @@ class Swap extends Component {
     const { loading, pools, pool, selectedPool } = this.state
     const { classes } = this.props
 
+    const name = selectedPool ? selectedPool.name.toLowerCase().includes(':') ? selectedPool.name.split(':')[1] : selectedPool.name : ''
+
     return (
       <div className={ classes.valContainer }>
         <div className={ classes.flexy }>
@@ -451,15 +453,15 @@ class Swap extends Component {
             id={ 'pool' }
             name={ 'pool' }
             select
-            value={ pool }
+            value={ name }
             onChange={ this.onPoolSelectChange }
             SelectProps={{
               native: false,
               classes: { icon: classes.icon },
-              renderValue: (option) => {
+              renderValue: (name) => {
                 return (
                   <div className={ classes.assetSelectIconName }>
-                    <Typography variant='h4'>{ option }</Typography>
+                    <Typography variant='h4'>{ name }</Typography>
                   </div>
                 )
               }
@@ -526,7 +528,7 @@ class Swap extends Component {
             <Typography variant='h4'>{ type }</Typography>
           </div>
           <div className={ classes.balances }>
-            { (asset ? (<Typography variant='h4' onClick={ () => { this.setAmount(asset.symbol, type, (asset ? floatToFixed(asset.balance, asset.decimals) : '0')) } } className={ classes.value } noWrap>{ 'Balance: '+ ( asset && asset.balance ? floatToFixed(asset.balance, 4) : '0.0000') } { asset ? asset.symbol : '' }</Typography>) : <Typography variant='h4' className={ classes.value } noWrap>Balance: -</Typography>) }
+            { (asset ? (<Typography variant='h4' onClick={ () => { this.setAmount(asset.symbol, type, (asset ? floatToFixed(asset.balance, asset.decimals) : '0')) } } className={ classes.value } noWrap>{ 'Balance: '+ ( asset && asset.balance ? floatToFixed(asset.balance, 4) : '0.0000') } { asset ? asset.name : '' }</Typography>) : <Typography variant='h4' className={ classes.value } noWrap>Balance: -</Typography>) }
           </div>
         </div>
         <div>
@@ -589,7 +591,7 @@ class Swap extends Component {
             />
           </div>
           <div className={ classes.assetSelectIconName }>
-            <Typography variant='h4'>{ option.symbol }</Typography>
+            <Typography variant='h4'>{ option.name }</Typography>
           </div>
         </React.Fragment>
       </MenuItem>

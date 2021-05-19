@@ -10,6 +10,7 @@ const styles = () => ({
     width: '100%',
     marginTop: '-12px',
     backgroundColor: colors.gray,
+    fontSize: '14px'
   },
 });
 
