@@ -1,0 +1,7 @@
+.MuiSelect-select {
+    color: white !important;
+}
+
+.MuiSelect-select.MuiSelect-select {
+    padding-right: 4rem !important;
+}
